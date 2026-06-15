@@ -264,8 +264,7 @@ def generate_pdf(rows, summary="", output_path="timetable.pdf"):
 
     doc.build(story)
     print(f"PDF saved -> {output_path}")
-
-rows, summary = load_timetable("timetable.json")
-
-generate_pdf(rows, summary, output_path="my_timetable.pdf")
-send_daily_mudge(rows, recipient_email=os.getenv("RECEIVER_EMAIL"))
+if __name__ == "__main__":
+    rows, summary = load_timetable("timetable.json")
+    generate_pdf(rows, summary, output_path="my_timetable.pdf")
+    send_daily_mudge(rows, recipient_email=os.getenv("RECEIVER_EMAIL"))

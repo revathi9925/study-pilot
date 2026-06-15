@@ -3,3 +3,4 @@ pdfplumber
 reportlab
 groq
 python-dotenv
+pytz

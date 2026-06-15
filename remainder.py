@@ -51,7 +51,9 @@ def send_daily_mudge(rows, recipient_email):
 
     msg = MIMEMultipart('alternative')
     msg['Subject'] = f'StudyPilot - Your plan for {today}'
-    msg['From']    = sender_email
+    msg['From']    = f"StudyPilot <{sender_email}>"   # ← change this line
+    msg['Reply-To'] = sender_email                     # ← add this
+    msg['X-Priority'] = '1'                            # ← add this
     msg['To']      = recipient_email
     msg.attach(MIMEText(html, 'html'))
 

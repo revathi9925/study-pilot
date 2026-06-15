@@ -120,10 +120,10 @@ def generate_weekly_plan(allocated_subjects, daily_hours=4, days_ahead=7):
 
     print("🤖 AI is generating your personalized timetable...")
     response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",  # FIXED: was llama-3.1-8b-instant which gave broken JSON
+        model="llama-3.1-8b-instant",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.2,
-        max_tokens= 4000
+        max_tokens=2000
     )
 
     return response.choices[0].message.content

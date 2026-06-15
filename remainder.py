@@ -2,14 +2,13 @@ import smtplib
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import date
+from datetime import date, timezone
 from dotenv import load_dotenv
 load_dotenv()
 
 def send_daily_mudge(rows, recipient_email):
-    from datetime import datetime
-    import pytz
-    IST = pytz.timezone("Asia/Kolkata")
+    from datetime import datetime, timezone, timedelta
+    IST = timezone(timedelta(hours=5, minutes=30))
     today = datetime.now(IST).date().isoformat()
 
     today_tasks = [r for r in rows if r['date'] == today]  # ✅ fixed: toady → today

@@ -194,4 +194,5 @@ def main():
     os.system("code timetable.json")
 
 
-main()
+if __name__ == "__main__":
+    main()

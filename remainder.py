@@ -7,7 +7,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def send_daily_mudge(rows, recipient_email):
-    today = date.today().isoformat()
+    from datetime import datetime
+    import pytz
+    IST = pytz.timezone("Asia/Kolkata")
+    today = datetime.now(IST).date().isoformat()
 
     today_tasks = [r for r in rows if r['date'] == today]  # ✅ fixed: toady → today
 

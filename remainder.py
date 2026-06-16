@@ -11,7 +11,11 @@ def send_daily_mudge(rows, recipient_email):
     IST = timezone(timedelta(hours=5, minutes=30))
     today = datetime.now(IST).date().isoformat()
 
-    today_tasks = [r for r in rows if r['date'] == today]  # ✅ fixed: toady → today
+    today_tasks = [r for r in rows if r['date'] == today]
+    if not today_tasks:
+        future_dates = sorted(set(r['date'] for r in rows if r['date'] >= today))
+        if future_dates:
+            today_tasks = [r for r in rows if r['date'] == future_dates[0]]
 
     print(f"📅 Today is: {today}")
     print(f"📋 Tasks found for today: {len(today_tasks)}")
@@ -65,3 +69,4 @@ def send_daily_mudge(rows, recipient_email):
             print(f'✅ Nudge sent to {recipient_email}')
     except Exception as e:
         print(f'❌ Email failed: {e}')
+        raise

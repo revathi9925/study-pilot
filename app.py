@@ -1,7 +1,7 @@
 import streamlit as st
 import json, os, tempfile
 from extract import extract_text_from_pdf, extract_syllabus
-from planner import allocate_hours, generate_weekly_plan, clean_json_response
+from planner import allocate_hours, generate_weekly_plan, clean_json_response, assign_dates
 from pdf_export import generate_pdf, load_timetable
 from remainder import send_daily_mudge
 
@@ -51,6 +51,7 @@ if st.button("🚀 Generate plan"):
         cleaned_timetable = cleaned_timetable[start : end + 1]
 
         timetable_data = json.loads(cleaned_timetable)
+        timetable_data = assign_dates(timetable_data)
 
         with open("timetable.json", "w") as f:
             json.dump(timetable_data, f, indent=2)

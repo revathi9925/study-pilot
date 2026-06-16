@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from groq import Groq
 from dotenv import load_dotenv
 
@@ -102,7 +102,6 @@ def generate_weekly_plan(allocated_subjects, daily_hours=4, days_ahead=7):
             "timetable": [
                 {{
                 "day": 1,
-                "date": "YYYY-MM-DD",
                 "slots": [
                     {{
                     "subject": "string",
@@ -123,7 +122,7 @@ def generate_weekly_plan(allocated_subjects, daily_hours=4, days_ahead=7):
         model="llama-3.1-8b-instant",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.2,
-        max_tokens=2000
+        max_tokens=4000
     )
 
     return response.choices[0].message.content
@@ -140,6 +139,14 @@ def clean_json_response(raw):
         raise ValueError("No JSON found")
 
     return raw[start:end + 1]
+
+
+def assign_dates(timetable_data, start_date=None):
+    if start_date is None:
+        start_date = date.today()
+    for day in timetable_data["timetable"]:
+        day["date"] = (start_date + timedelta(days=day["day"] - 1)).isoformat()
+    return timetable_data
 
 
 def display_timetable(timetable_data):
@@ -185,6 +192,7 @@ def main():
     cleaned = clean_json_response(raw)
 
     timetable_data = json.loads(cleaned)
+    timetable_data = assign_dates(timetable_data)
     display_timetable(timetable_data)
 
     with open("timetable.json", "w", encoding="utf-8") as f:
